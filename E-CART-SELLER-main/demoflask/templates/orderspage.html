@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/orderspage.css">
+    <link rel="shortcut icon" href="/static/logo.png" type="image/x-icon">
+
+</head>
+
+<body>
+    {% extends 'dash.html' %}
+
+    {% block title %}Orderspage{% endblock %}
+
+    {% block content %}
+    <h3 style="margin-bottom: 30px;">Orders</h3>
+
+   
+
+    <div class="container orders-container">
+
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Username</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order[0] }}</td>
+                    <td>{{order[1]}}</td>
+                    <td>{{ order[2] }}</td>
+                    <td>&#8377;{{ order[3] }}</td>
+                    <td>{{ order[4] }}</td>
+                    <td><button onclick="changeStatus('{{ order[0] }}')"><i class="fas fa-edit"></i></button></td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function changeStatus(orderId) {
+            console.log(orderId);
+            var newStatus = prompt("Enter new status (pending/dispatched):");
+            if (newStatus != null) {
+                if (newStatus == "pending" || newStatus == "dispatched") {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/change_status", true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            location.reload();
+                        }
+                    };
+                    xhr.send(JSON.stringify({ id: orderId, status: newStatus }));
+                } else {
+                    alert("Invalid status. Please enter pending or dispatched.");
+                }
+            }
+        }
+
+    </script>
+
+    {% endblock %}
+
+</body>
+
+</html>

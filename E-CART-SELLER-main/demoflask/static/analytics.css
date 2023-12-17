@@ -1,0 +1,19 @@
+.graphcontainer {
+    display: flex;
+    flex-wrap: wrap;
+  
+    justify-content: center;
+    align-items: center;
+}
+
+.graph {
+    width: 48%;
+    margin: 10px;
+    background-color: aliceblue;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 10px;
+}
+
+.graphcontainer::-webkit-scrollbar{
+  display: none;
+}
